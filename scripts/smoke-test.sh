@@ -9,12 +9,13 @@ TIMEOUT_PERIOD=60
 DELAY=2
 
 function ping_server() {
-    echo $(curl $PUBLIC_IP)
+    echo $(curl --fail $PUBLIC_IP)
 }
 
 function wait_for_server() {
     t=$TIMEOUT_PERIOD
-    ping_server >/dev/null 2>&1
+
+    curl --fail $PUBLIC_IP
     until [ $? = 0 ]  ; do
         t=$((t - DELAY))
         if [[ $t -eq 0 ]]; then
@@ -24,7 +25,7 @@ function wait_for_server() {
 
         echo "Server is not up yet, remaining time: $t seconds"
         sleep $DELAY
-        ping_server >/dev/null 2>&1
+        curl --fail $PUBLIC_IP
     done
 
     echo "====== Server is up"
