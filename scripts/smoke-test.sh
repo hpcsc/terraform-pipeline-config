@@ -7,7 +7,7 @@ CONFIG_DIR=$1
 cd $CONFIG_DIR
 
 PUBLIC_IP=$(terraform output -json | jq -r '.server_public_ip.value')
-TIMEOUT_PERIOD=30
+TIMEOUT_PERIOD=60
 DELAY=2
 
 function ping_server() {
