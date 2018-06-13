@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 CONFIG_DIR=$1
 
 cd $CONFIG_DIR
@@ -15,9 +13,9 @@ function ping_server() {
 }
 
 function wait_for_server() {
-    response=$(ping_server)
     t=$TIMEOUT_PERIOD
-    until echo $response | jq . >/dev/null 2>&1 ; do
+    ping_server >/dev/null 2>&1
+    until [ $? = 0 ]  ; do
         t=$((t - DELAY))
         if [[ $t -eq 0 ]]; then
             echo "====== Server is not up after $TIMEOUT_PERIOD seconds"
@@ -26,7 +24,7 @@ function wait_for_server() {
 
         echo "Server is not up yet, remaining time: $t seconds"
         sleep $DELAY
-        response=$(ping_server)
+        ping_server >/dev/null 2>&1
     done
 
     echo "====== Server is up"
