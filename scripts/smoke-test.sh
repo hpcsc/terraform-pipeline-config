@@ -32,5 +32,5 @@ function wait_for_server() {
     echo "====== Server is up"
 }
 
-echo "====== Pinging $PING_URL"
+echo "====== Pinging $PUBLIC_IP"
 wait_for_server
